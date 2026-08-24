@@ -11,7 +11,7 @@ class UserService {
         return this.userRepository.findAll();
     }
 
-    async findById(id: string) {
+    async findById(id: number) {
         return this.userRepository.findById(id);
     }
 
@@ -19,13 +19,18 @@ class UserService {
         return this.userRepository.create(data);
     }
 
-    async update(id: string, data: any) {
+    async update(id: number, data: any) {
         return this.userRepository.update(id, data);
     }
 
-    async delete(id: string) {
+    async delete(id: number) {
         return this.userRepository.delete(id);
     }
+
+    async restore(id: number) {
+        return this.userRepository.restore(id);
+    }
+    
 }
 
 export default UserService;

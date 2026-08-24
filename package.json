@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "make:migration": "npm run typeorm migration:create",
+    "migrate": "npm run typeorm migration:run -- -d src/config/database.ts",
+    "migration:revert": "npm run typeorm migration:revert -- -d src/config/database.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +27,8 @@
     "@types/express": "^5.0.6",
     "@types/node": "^26.2.0",
     "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
     "tsx": "^4.23.12",
-    "typescript": "^7.0.2"
+    "typescript": "5.9"
   }
 }
