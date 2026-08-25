@@ -6,6 +6,6 @@ import authRoutes from './auth'
 const router = Router();
 
 router.use('/users', userRoutes);
-router.use('/auth', authRoutes);
+router.use('/', authRoutes);
 
 export default router;

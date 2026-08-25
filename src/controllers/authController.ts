@@ -12,6 +12,11 @@ class AuthController{
         const result = await this.authService.login(email, password);
         res.json(result);
     }
+
+    logout = async (req: any, res: any) => {
+        const result = await this.authService.logout(req.user);
+        res.json(result);
+    }
 }
 
 export default AuthController;

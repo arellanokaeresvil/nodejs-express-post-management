@@ -24,6 +24,14 @@ class AuthService {
         const token = generateToken(user.id);
         return { message: "Login successful", data: user, token };
     }
+
+    logout = async (data: any) =>{
+
+        return{
+            message: "Login successful"
+        }
+
+    }
 }
 
 export default AuthService;
