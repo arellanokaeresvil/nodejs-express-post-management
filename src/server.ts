@@ -6,6 +6,9 @@ import routes from './routes/index';
 import AppDataSource from './config/database';
 import { generalRateLimiter } from './middlewares/rateLimiter';
 
+import errorHandler from './middlewares/errorHandler';
+import AppError from './utils/appError';
+
 dotenv.config();
 
 const app = express();
@@ -20,6 +23,8 @@ app.use(generalRateLimiter);
 
 app.use('/api', routes);
 
+
+app.use(errorHandler)
 
 AppDataSource.initialize()
     .then(() => {

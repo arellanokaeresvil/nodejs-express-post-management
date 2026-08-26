@@ -1,4 +1,5 @@
 import AuthService from "../services/authServices";
+import ApiResponse from "../utils/response";
 
 class AuthController{
     private authService: AuthService;
@@ -10,7 +11,7 @@ class AuthController{
     login = async (req: any, res: any) => {
         const { email, password } = req.body;
         const result = await this.authService.login(email, password);
-        res.json(result);
+        return ApiResponse.success(res, result, 'Login successful',200)
     }
 
     logout = async (req: any, res: any) => {

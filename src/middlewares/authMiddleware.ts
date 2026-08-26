@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import AppError from "../utils/appError";
 
 interface JwtPayload {
     userId: number;
@@ -13,9 +14,10 @@ const authMiddleware = (
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({
-            error: "No token provided"
-        });
+        throw new AppError('No token provided', 401)
+        // return res.status(401).json({
+        //     error: "No token provided"
+        // });
     }
 
     const token = authHeader.split(" ")[1];
@@ -23,9 +25,10 @@ const authMiddleware = (
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {
-        return res.status(500).json({
-            error: "JWT secret is not configured"
-        });
+        throw new AppError('JWT secret is not configured', 500)
+        // return res.status(500).json({
+        //     error: "JWT secret is not configured"
+        // });
     }
 
     try {
@@ -37,9 +40,10 @@ const authMiddleware = (
 
         next();
     } catch (error) {
-        return res.status(401).json({
-            error: "Invalid token"
-        });
+        throw new AppError('Unauthorized: Invalid token',401)
+        // return res.status(401).json({
+        //     error: "Invalid token"
+        // });
     }
 };
 

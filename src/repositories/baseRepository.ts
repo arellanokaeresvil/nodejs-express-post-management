@@ -1,3 +1,4 @@
+import AppError from "../utils/appError";
 
 class BaseRepository {
 
@@ -21,27 +22,27 @@ class BaseRepository {
         try {
             return await this.model.save(data);
         } catch (error) {
-            throw new Error(`Error creating item ${error}`);
+            throw new AppError(`Error creating item`, 500 ,error);
         }
     }
 
     async update(id:number, data:object) {
         try {
             const find = await this.findById(id);
-            if(!find) throw new Error("Item not found");
+            if(!find) throw new AppError("Resource not found",404);
             return await this.model.update(id, data);
         } catch (error) {
-            throw new Error(`Error updating item ${error}`);
+            throw new AppError(`Error updating item`,500, error);
         }
     }
 
     async delete(id:number) {
         try{
             const find = await this.findById(id);
-            if(!find) throw new Error("Item not found");
+            if(!find) throw new AppError("Resource not found",404);
             return this.model.softDelete(id);
         }catch (error) {
-            throw new Error(`Error deleting item ${error}`);
+            throw new AppError(`Error deleting item`,500, error);
         }
         
     }
@@ -49,10 +50,10 @@ class BaseRepository {
     async restore(id:number) {
         try {
             const find = await this.findDeletedById(id);
-            if(!find) throw new Error("Item not found");
+            if(!find) throw new AppError("Resource not found",404);
             return this.model.restore(id);
         } catch (error) {
-            throw new Error(`Error restoring item ${error}`);
+            throw new AppError(`Error restoring item`, 500, error);
         }
     }
 
@@ -65,7 +66,7 @@ class BaseRepository {
                 withDeleted: true
             });
         } catch (error) {
-            throw new Error(`Error finding deleted item ${error}`);
+            throw new AppError(`Error finding deleted item`,500 , error);
         }
     }
 
