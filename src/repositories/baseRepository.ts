@@ -1,4 +1,5 @@
 import AppError from "../utils/appError";
+import Pagination from "../utils/pagination";
 
 class BaseRepository {
 
@@ -6,6 +7,27 @@ class BaseRepository {
 
     constructor(model:any) {
         this.model = model;
+    }
+
+    async list(req: {search?: string, page?: number, limit?: number}){
+
+        const query = await this.model.createQueryBuilder('user')
+
+        const page = req.page ?? 1
+        const limit = req.limit ?? 10
+
+        const skip = ( page - 1) * limit 
+        const [data, total] = await query
+        .skip(skip)
+        .take(limit)
+        .getManyAndCount();
+
+
+        return {
+            list:data,
+            pagination: Pagination(page,limit,total)
+        }
+
     }
 
     async findAll() {

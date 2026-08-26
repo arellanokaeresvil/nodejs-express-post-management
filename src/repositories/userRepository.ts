@@ -8,7 +8,11 @@ class userRepository extends BaseRepository {
     }
 
     async findByEmail(email: string) {
-        return AppDataSource.getRepository(User).findOne({ where: { email } });
+        return AppDataSource.getRepository(User)
+        .createQueryBuilder("user")
+        .addSelect("user.password")
+        .where("user.email = :email", { email })
+        .getOne();
     }
 
 

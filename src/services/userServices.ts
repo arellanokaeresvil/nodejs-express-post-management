@@ -8,6 +8,10 @@ class UserService {
         this.userRepository = userRepository;
     }
 
+    async list(req: object) {
+        return this.userRepository.list(req);
+    }
+
     async findAll() {
         return this.userRepository.findAll();
     }

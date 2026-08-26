@@ -12,7 +12,7 @@ class userController{
     }
 
     index = async (req: Request, res: Response) => {
-        const users = await this.userService.findAll();
+        const users = await this.userService.list(req.query);
         return ApiResponse.success(res, users, "Users fetch successfuly", 200)
     };
 
