@@ -9,7 +9,7 @@ class UserService {
     }
 
     async list(req: object) {
-        return this.userRepository.list(req);
+        return this.userRepository.usersList(req);
     }
 
     async findAll() {

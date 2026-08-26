@@ -7,37 +7,16 @@ class BaseRepository {
 
     constructor(model:any) {
         this.model = model;
-    }
-
-    async list(req: {search?: string, page?: number, limit?: number}){
-
-        const query = await this.model.createQueryBuilder('user')
-
-        const page = req.page ?? 1
-        const limit = req.limit ?? 10
-
-        const skip = ( page - 1) * limit 
-        const [data, total] = await query
-        .skip(skip)
-        .take(limit)
-        .getManyAndCount();
-
-
-        return {
-            list:data,
-            pagination: Pagination(page,limit,total)
-        }
-
-    }
+    }  
 
     async findAll() {
         return this.model.find();
     }
 
     async findById(id:number) {
-        return this.model.findOneByOrFail({
-            id
-        });
+        const find = await this.model.findOneBy( {id} );
+        if(!find) throw new AppError('Resource not found', 404)
+        return find;
     }
 
     async create(data:object) {
