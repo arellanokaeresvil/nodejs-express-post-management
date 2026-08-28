@@ -1,6 +1,8 @@
 import express from 'express';
 import userController from '../containers/userContainer';
 import authMiddleware from '../middlewares/authMiddleware';
+import validate from '../middlewares/validate';
+import { createUserSchema } from '../validations/userValidation';
 
 const router = express.Router();
 
@@ -8,7 +10,7 @@ router.use(authMiddleware);
 
 router.get('/', userController.index);
 router.get('/:id', userController.show);
-router.post('/', userController.store);
+router.post('/', validate(createUserSchema), userController.store);
 router.put('/:id', userController.update);
 router.delete('/:id', userController.destroy);
 router.get('/restore/:id', userController.restore);

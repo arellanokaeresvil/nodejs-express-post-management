@@ -12,9 +12,11 @@ interface UserQueryOptions{
         orderBy?: "ASC" | "DESC"
 
 }
+
 class userRepository extends BaseRepository {
 
     private pagination = new PaginationRepository<User>(this.model)
+    private table = 'user'
 
     constructor() {
         super(AppDataSource.getRepository(User));
@@ -34,12 +36,16 @@ class userRepository extends BaseRepository {
 
     async usersList(options: UserQueryOptions ){ /// to control query for data list and pagination with conditional, search and filter query
 
-        const query = this.model.createQueryBuilder('user')
+        const query = this.model.createQueryBuilder(this.table).orderBy({
+            "user.updated_at":options.orderBy ?? 'DESC'
+        })
 
         if(options.search){
             query.andWhere(
                 `(
                     user.first_name LIKE:search
+                    OR user.last_name LIKE:search
+                    OR user.email LIKE:search
                 )`,
                 {
                     search: `%${options.search}%`

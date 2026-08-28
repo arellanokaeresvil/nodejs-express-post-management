@@ -1,5 +1,6 @@
 import UserRepository from "../repositories/userRepository";
 import bcrypt from 'bcryptjs'
+import AppError from "../utils/appError";
 
 class UserService {
     private userRepository: UserRepository;
@@ -21,7 +22,10 @@ class UserService {
     }
 
     async create(data: any) {
-        data.password = await bcrypt.hash(data.password, 10);
+        const find = await this.userRepository.findByEmail(data.email)
+        if(find) throw new AppError('Validation failed', 422, ['Email is already taken']) // validate if email is taken
+
+        data.password = await bcrypt.hash(data.password, 10); // to hassh password
         return this.userRepository.create(data);
     }
 
